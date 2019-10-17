@@ -4,4 +4,4 @@
 
 [Crie uma aplicação para armazenar projetos e suas tarefas do zero utilizando Express.](https://github.com/Rocketseat/bootcamp-gostack-desafio-01/)
 
-Desafio concluido!
+Desafio concluído!
