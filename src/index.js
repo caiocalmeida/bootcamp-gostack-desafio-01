@@ -11,6 +11,24 @@ class Project {
 }
 
 const projects = [];
+var requestCount = 0;
+
+server.use((req, res, next) => {
+  console.log('Request count: ' + ++requestCount);
+
+  next();
+});
+
+function checkIfIdInParams(req, res, next) {
+  const { id } = req.params;
+  const indexOfId = projects.findIndex((element) => { return element.id == id });
+
+  if(indexOfId === -1) {
+    return res.status(404).send('Project with requested id not found.');
+  }
+
+  next();
+}
 
 server.post('/projects', (req, res) => {
   const { id, title } = req.body;
@@ -34,7 +52,7 @@ server.put('/projects', (req, res) => {
   return res.send('Project updated.');
 });
 
-server.delete('/projects/:id', (req, res) => {
+server.delete('/projects/:id', checkIfIdInParams, (req, res) => {
   const { id } = req.params;
 
   const index = projects.findIndex((element) => { return element.id == id });
@@ -43,7 +61,7 @@ server.delete('/projects/:id', (req, res) => {
   return res.send('Project deleted.');
 });
 
-server.post('/projects/:id/tasks', (req, res) => {
+server.post('/projects/:id/tasks', checkIfIdInParams, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
 
